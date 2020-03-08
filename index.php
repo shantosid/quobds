@@ -1,3 +1,38 @@
+<?php 
+    include("config.php");
+    session_start();
+
+    if($_SERVER["REQUEST_METHOD"] == "POST"){
+        $myusername = mysqli_real_escape_string($conn, $_POST['username']);
+        $mypassword = mysqli_real_escape_string($conn, $_POST['password']);
+
+        $sql = "SELECT id FROM user WHERE username = '$myusername' and password = '$mypassword'";
+        $result = mysqli_query( $conn,$sql);
+        // if($result === FALSE){
+        //     echo("Failed to connect to MYSQL!" . mysqli_error($conn));
+        //     exit();
+        // }
+        // else{
+        //     echo("Okay. " . $result);
+        // }
+        $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+        //$active = $row['id'];
+
+        $count = mysqli_num_rows($result);
+        
+        // If result matched $myusername and $mypassword, table row must be 1 row
+
+        if($count == 1) {
+            
+            $_SESSION['login_user'] = $myusername;
+            //User to transfer from one page to another
+            header('location: home.php');
+        } else {
+            $error = "Your username or password is invalid!";
+        }
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,10 +85,10 @@
         </div>
 
         
-        <form method="post" action="login.php">
+        <form method="post" action="">
             <div class="form-group center">
-                <label for="email">Email Address</label>
-                <input type="email" name="email" class="form-control w-75 ml-5" aria-describedby="emailHelp" placeholder="Enter email">
+                <label for="email">Username</label>
+                <input type="text" name="username" class="form-control w-75 ml-5" aria-describedby="emailHelp" placeholder="Enter Username">
             </div>
             <div class="form-group">
                 <label for="password">Password</label>

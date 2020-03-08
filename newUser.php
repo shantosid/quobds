@@ -1,11 +1,7 @@
 <?php
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $table = "users";
 
-    $conn = mysqli_connect($servername, $username, $password, $table);
-
+    include("config.php");
+    
     // if(!$conn){
     //     die("Connection Failed: " . mysqli_connect_error());
     // }
@@ -17,7 +13,7 @@
     $phone= $_POST["phone"];
 
     $sql = "INSERT INTO user (username, password, name, email, phone) 
-    VALUES($user, $pass, $name, $email, $phone )";
+    VALUES('$user', '$pass', '$name', '$email', '$phone' )";
     
     if(mysqli_query($conn, $sql)){
         echo "Registered successfully! Go back and log in!";
